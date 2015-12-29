@@ -1,0 +1,33 @@
+{
+  "name": "play_with_express",
+  "description": "as name implied, recently i lost cookies in a project",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:goodagood/testexp.git"
+  },
+  "private": false,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.8.1",
+    "cookie": "0.1.2",
+    "cookie-parser": "~1.3.3",
+    "cookie-signature": "1.0.6",
+    "crc": "3.2.1",
+    "debug": "~2.0.0",
+    "depd": "~1.0.1",
+    "express": "~4.9.0",
+    "express-handlebars": "^2.0.1",
+    "express-session": "^1.12.1",
+    "graceful-fs": "^4.1.2",
+    "morgan": "~1.3.0",
+    "on-headers": "~1.0.0",
+    "parseurl": "~1.3.0",
+    "retry": "^0.8.0",
+    "serve-favicon": "~2.1.3",
+    "uid-safe": "1.1.0",
+    "utils-merge": "1.0.0"
+  }
+}
