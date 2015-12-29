@@ -7,7 +7,9 @@ This use Mozilla's client-sessions
 
 2015 1126
 
-    $ DEBUG=cookb:* npm start
+    #$ DEBUG=x240:* npm start
+    $ DEBUG=x240:* npm start
+    
 
 <!--
     vim: set ft=markdown tw=78:
