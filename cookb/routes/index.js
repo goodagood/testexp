@@ -7,7 +7,8 @@ var p = console.log;
 /* GET home page. */
 router.get('/', function(req, res) {
     p('get /, req.cookies', req.cookies);
-    res.render('index', { title: 'Express' });
+    var dd = Date();
+    res.render('index', { title: 'Express', 'date': dd });
 });
 
 router.get('/sone', function(req, res) {

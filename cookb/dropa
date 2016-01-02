@@ -1,0 +1,14 @@
+#!/usr/bin/expect
+
+# easy tool by 'expect' to jump to points.
+
+spawn node
+expect ">"
+send "var p = console.log;\r"
+send "var u = require('underscore');\r"
+expect ">"
+
+send ".load  ./app.js\r"
+
+expect "ok start interact with me:"
+interact
