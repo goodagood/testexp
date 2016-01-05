@@ -1,7 +1,5 @@
 
-
-// this is our app.js
-//
+// this is app.js
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -11,6 +9,9 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+
+// add a tool in debugging
+var u = require("underscore");
 
 // this is the application
 var app = express();
@@ -46,14 +47,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 var o = {};
 function watcher(req, res, next) {
     console.log(' you are watching through express.js middle-ware like function ');
-    if(o){
-        o.req = req;
-        o.res = res;
-    }
+    o.req = req;
+    o.res = res;
+
+    // set a cookie for checkings ... we are not doing production coding...
+    res.cookie('u_name', 'haha, yuou get name');
     next();
 }
-//console.log(1104, u.isFunction(watcher));
-app.use(watcher);  // don't forget this, you need to use it.
+app.use(watcher);
 
 
 app.use('/', routes);
@@ -91,7 +92,7 @@ app.use(function(err, req, res, next) {
 });
 
 
-module.exports = app;
+//module.exports = app;
 
 
 
@@ -100,6 +101,5 @@ module.exports = app;
 var port_number = 3300;
 
 var server = app.listen(port_number, function() {
-  //debug('Express server listening on port ' + server.address().port);
   console.log('Express server listening on port ' + server.address().port);
 });

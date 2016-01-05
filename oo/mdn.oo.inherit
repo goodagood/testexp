@@ -1,0 +1,579 @@
+
+In This Article
+
+ 1. Inheritance with the prototype chain
+     1. Inheriting properties
+     2. Inheriting "methods"
+ 2. Different ways to create objects and the resulting prototype chain
+     1. Objects created with syntax constructs
+     2. With a constructor
+     3. With Object.create
+     4. With the class keyword
+     5. Performance
+     6. Bad practice: Extension of native prototypes
+ 3. Example
+ 4. prototype and Object.getPrototypeOf
+ 5. In conclusion
+
+This article is in need of a technical review.
+
+JavaScript is a bit confusing for developers experienced in class-based languages (like Java or C++), as it is dynamic and
+does not provide a class implementation per se (the class keyword is introduced in ES6, but is syntactical sugar,
+JavaScript remaining prototype-based).
+
+When it comes to inheritance, JavaScript only has one construct: objects. Each object has an internal link to another
+object called its prototype. That prototype object has a prototype of its own, and so on until an object is reached with
+null as its prototype. null, by definition, has no prototype, and acts as the final link in this prototype chain.
+
+While this is often considered to be one of JavaScript's weaknesses, the prototypal inheritance model is in fact more
+powerful than the classic model. It is, for example, fairly trivial to build a classic model on top of a prototypal model,
+while the other way around is a far more difficult task.
+
+Inheritance with the prototype chain
+
+Inheriting properties
+
+JavaScript objects are dynamic "bags" of properties (referred to as own properties). JavaScript objects have a link to a
+prototype object. When trying to access a property of an object, the property will not only be sought on the object but on
+the prototype of the object, the prototype of the prototype, and so on until either a property with a matching name is
+found or the end of the prototype chain is reached.
+
+Following the ECMAScript standard, the notation someObject.[[Prototype]] is used to designate the prototype of someObject.
+This is equivalent to the JavaScript property __proto__ (now deprecated). Since ECMAScript 6, the [[Prototype]] is
+accessed using the accessors Object.getPrototypeOf() and Object.setPrototypeOf().
+
+Here is what happens when trying to access a property:
+
+// Let's assume we have object o, with its own properties a and b:
+// {a: 1, b: 2}
+// o.[[Prototype]] has properties b and c:
+// {b: 3, c: 4}
+// Finally, o.[[Prototype]].[[Prototype]] is null.
+// This is the end of the prototype chain as null,
+// by definition, null has no [[Prototype]].
+// Thus, the full prototype chain looks like:
+// {a:1, b:2} ---> {b:3, c:4} ---> null
+
+console.log(o.a); // 1
+// Is there an 'a' own property on o? Yes, and its value is 1.
+
+console.log(o.b); // 2
+// Is there a 'b' own property on o? Yes, and its value is 2.
+// The prototype also has a 'b' property, but it's not visited.
+// This is called "property shadowing"
+
+console.log(o.c); // 4
+// Is there a 'c' own property on o? No, check its prototype.
+// Is there a 'c' own property on o.[[Prototype]]? Yes, its value is 4.
+
+console.log(o.d); // undefined
+// Is there a 'd' own property on o? No, check its prototype.
+// Is there a 'd' own property on o.[[Prototype]]? No, check its prototype.
+// o.[[Prototype]].[[Prototype]] is null, stop searching,
+// no property found, return undefined
+
+Setting a property to an object creates an own property. The only exception to the getting and setting behavior rules is
+when there is an inherited property with a getter or a setter.
+
+Inheriting "methods"
+
+JavaScript does not have "methods" in the form that class-based languages define them. In JavaScript, any function can be
+added to an object in the form of a property. An inherited function acts just as any other property, including property
+shadowing as shown above (in this case, a form of method overriding).
+
+When an inherited function is executed, the value of this points to the inheriting object, not to the prototype object
+where the function is an own property.
+
+var o = {
+  a: 2,
+  m: function(b){
+    return this.a + 1;
+  }
+};
+
+console.log(o.m()); // 3
+// When calling o.m in this case, 'this' refers to o
+
+var p = Object.create(o);
+// p is an object that inherits from o
+
+p.a = 12; // creates an own property 'a' on p
+console.log(p.m()); // 13
+// when p.m is called, 'this' refers to p.
+// So when p inherits the function m of o,
+// 'this.a' means p.a, the own property 'a' of p
+
+Different ways to create objects and the resulting prototype chain
+
+Objects created with syntax constructs
+
+var o = {a: 1};
+
+// The newly created object o has Object.prototype as its [[Prototype]]
+// o has no own property named 'hasOwnProperty'
+// hasOwnProperty is an own property of Object.prototype.
+// So o inherits hasOwnProperty from Object.prototype
+// Object.prototype has null as its prototype.
+// o ---> Object.prototype ---> null
+
+var a = ["yo", "whadup", "?"];
+
+// Arrays inherit from Array.prototype
+// (which has methods like indexOf, forEach, etc.)
+// The prototype chain looks like:
+// a ---> Array.prototype ---> Object.prototype ---> null
+
+function f(){
+  return 2;
+}
+
+// Functions inherit from Function.prototype
+// (which has methods like call, bind, etc.)
+// f ---> Function.prototype ---> Object.prototype ---> null
+
+With a constructor
+
+A "constructor" in JavaScript is "just" a function that happens to be called with the new operator.
+
+function Graph() {
+  this.vertices = [];
+  this.edges = [];
+}
+
+Graph.prototype = {
+  addVertex: function(v){
+    this.vertices.push(v);
+  }
+};
+
+var g = new Graph();
+// g is an object with own properties 'vertices' and 'edges'.
+// g.[[Prototype]] is the value of Graph.prototype when new Graph() is executed.
+
+With Object.create
+
+ECMAScript 5 introduced a new method: Object.create(). Calling this method creates a new object. The prototype of this
+object is the first argument of the function:
+
+var a = {a: 1};
+// a ---> Object.prototype ---> null
+
+var b = Object.create(a);
+// b ---> a ---> Object.prototype ---> null
+console.log(b.a); // 1 (inherited)
+
+var c = Object.create(b);
+// c ---> b ---> a ---> Object.prototype ---> null
+
+var d = Object.create(null);
+// d ---> null
+console.log(d.hasOwnProperty);
+// undefined, because d doesn't inherit from Object.prototype
+
+With the class keyword
+
+ECMAScript 6 introduced a new set of keywords implementing classes. Although these constructs look like those familiar to
+developers of class-based languages, they are not the same. JavaScript remains prototype-based. The new keywords include
+class, constructor, static, extends, and super.
+
+"use strict";
+
+class Polygon {
+  constructor(height, width) {
+    this.height = height;
+    this.width = width;
+  }
+}
+
+class Square extends Polygon {
+  constructor(sideLength) {
+    super(sideLength, sideLength);
+  }
+  get area() {
+    return this.height * this.width;
+  }
+  set sideLength(newLength) {
+    this.height = newLength;
+    this.width = newLength;
+  }
+}
+
+var square = new Square(2);
+
+Performance
+
+The lookup time for properties that are high up on the prototype chain can have a negative impact on performance, and this
+may be significant in code where performance is critical. Additionally, trying to access nonexistent properties will
+always traverse the full prototype chain.
+
+Also, when iterating over the properties of an object, every enumerable property that is on the prototype chain will be
+enumerated.
+
+To check whether an object has a property defined on itself and not somewhere on its prototype chain, it is necessary to
+use the hasOwnProperty method which all objects inherit from Object.prototype.
+
+hasOwnProperty is the only thing in JavaScript which deals with properties and does not traverse the prototype chain.
+
+Note: It is not enough to check whether a property is undefined. The property might very well exist, but its value just
+happens to be set to undefined.
+
+Bad practice: Extension of native prototypes
+
+One mis-feature that is often used is to extend Object.prototype or one of the other built-in prototypes.
+
+This technique is called monkey patching and breaks encapsulation. While used by popular frameworks such as Prototype.js,
+there is still no good reason for cluttering built-in types with additional non-standard functionality.
+
+The only good reason for extending a built-in prototype is to backport the features of newer JavaScript engines; for
+example Array.forEach, etc.
+
+Example
+
+B shall inherit from A:
+
+function A(a){
+  this.varA = a;
+}
+
+// What is the purpose of including varA in the prototype when A.prototype.varA will always be shadowed by
+// this.varA, given the definition of function A above?
+A.prototype = {
+  varA : null,  // Shouldn't we strike varA from the prototype as doing nothing?
+      // perhaps intended as an optimization to allocate space in hidden classes?
+      // https://developers.google.com/speed/articles/optimizing-javascript#Initializing instance variables
+      // would be valid if varA wasn't being initialized uniquely for each instance
+  doSomething : function(){
+    // ...
+  }
+};
+
+function B(a, b){
+  A.call(this, a);
+  this.varB = b;
+}
+B.prototype = Object.create(A.prototype, {
+  varB : {
+    value: null,
+    enumerable: true,
+    configurable: true,
+    writable: true
+  },
+  doSomething : {
+    value: function(){ // override
+      A.prototype.doSomething.apply(this, arguments); // call super
+      // ...
+    },
+    enumerable: true,
+    configurable: true,
+    writable: true
+  }
+});
+B.prototype.constructor = B;
+
+var b = new B();
+b.doSomething();
+
+The important parts are:
+
+  • Types are defined in .prototype
+  • You use Object.create() to inherit
+
+prototype and Object.getPrototypeOf
+
+JavaScript is a bit confusing for developers coming from Java or C++, as it's all dynamic, all runtime, and it has no
+classes at all. It's all just instances (objects). Even the "classes" we simulate are just a function object.
+
+You probably already noticed that our function A has a special property called prototype. This special property works with
+the JavaScript new operator. The reference to the prototype object is copied to the internal [[Prototype]] property of the
+new instance. For example, when you do var a1 = new A(), JavaScript (after creating the object in memory and before
+running function A() with this defined to it) sets a1.[[Prototype]] = A.prototype. When you then access properties of the
+instance, JavaScript first checks whether they exist on that object directly, and if not, it looks in [[Prototype]]. This
+means that all the stuff you define in prototype is effectively shared by all instances, and you can even later change
+parts of prototype and have the changes appear in all existing instances, if you wanted to.
+
+If, in the example above, you do var a1 = new A(); var a2 = new A(); then a1.doSomething would actually refer to
+Object.getPrototypeOf(a1).doSomething, which is the same as the A.prototype.doSomething you defined, i.e.
+Object.getPrototypeOf(a1).doSomething == Object.getPrototypeOf(a2).doSomething == A.prototype.doSomething.
+
+In short, prototype is for types, while Object.getPrototypeOf() is the same for instances.
+
+[[Prototype]] is looked at recursively, i.e. a1.doSomething, Object.getPrototypeOf(a1).doSomething, Object.getPrototypeOf
+(Object.getPrototypeOf(a1)).doSomething etc., until it's found or Object.getPrototypeOf returns null.
+
+So, when you call
+
+var o = new Foo();
+
+JavaScript actually just does
+
+var o = new Object();
+o.[[Prototype]] = Foo.prototype;
+Foo.call(o);
+
+(or something like that) and when you later do
+
+o.someProp;
+
+it checks whether o has a property someProp. If not it checks Object.getPrototypeOf(o).someProp and if that doesn't exist
+it checks Object.getPrototypeOf(Object.getPrototypeOf(o)).someProp and so on.
+
+In conclusion
+
+It is essential to understand the prototypal inheritance model before writing complex code that makes use of it. Also, be
+aware of the length of the prototype chains in your code and break them up if necessary to avoid possible performance
+problems. Further, the native prototypes should never be extended unless it is for the sake of compatibility with newer
+JavaScript features.
+
+Share:
+
+  • Twitter
+  • Facebook
+  • Google+
+
+Document Tags and Contributors
+
+Tags: 
+
+  • Inheritance
+  • Intermediate
+  • Javascript
+  • JavaScript
+  • OOP
+
+ Contributors to this page: zanetu, mykongee, chmanie, teoli, fscholz, billyeh, Swanidhi, BrianDiPalma, jpmedley, SimeonJM
+, SphinxKnight, ro-savage, xfq, dhimes, anirudh_venkatesh, Delapouite, jeteon, Jeremie, mistral01, Narasimman, kscarfone,
+Nick_Pershin, Sheppy, safjanowski, bigbossSNK, ziyunfei, enderandpeter, alex.w.y, berkerpeksag, dbruant, -TNO-,
+krofdrakula, romanco, vbfox, BYK, Johnjbarton
+ Last updated by: zanetu, Jan 3, 2016, 5:04:28 PM
+Hide Sidebar
+See also
+
+ 1. JavaScript
+ 2. Tutorials:
+ 3. JavaScript Guide
+     1. Introduction
+     2. Grammar and types
+     3. Control flow and error handling
+     4. Loops and iteration
+     5. Functions
+     6. Expressions and operators
+     7. Numbers and dates
+     8. Text formatting
+     9. Regular expressions
+    10. Indexed collections
+    11. Keyed collections
+    12. Working with objects
+    13. Details of the object model
+    14. Iterators and generators
+    15. Meta programming
+ 4. Introductory
+     1. JavaScript basics
+     2. JavaScript technologies overview
+     3. Introduction to Object Oriented JavaScript
+ 5. Intermediate
+     1. A re-introduction to JavaScript
+     2. JavaScript data structures
+     3. Equality comparisons and sameness
+     4. Closures
+ 6. Advanced
+     1. Inheritance and the prototype chain
+     2. Strict mode
+     3. JavaScript typed arrays
+     4. SIMD types
+     5. Memory Management
+     6. Concurrency model and Event Loop
+ 7. References:
+ 8. Built-in objects
+     1. Standard built-in objects
+     2. Array
+     3. ArrayBuffer
+     4. Boolean
+     5. DataView
+     6. Date
+     7. Error
+     8. EvalError
+     9. Float32Array
+    10. Float64Array
+    11. Function
+    12. Generator
+    13. GeneratorFunction
+    14. Infinity
+    15. Int16Array
+    16. Int32Array
+    17. Int8Array
+    18. InternalError
+    19. Intl
+    20. Intl.Collator
+    21. Intl.DateTimeFormat
+    22. Intl.NumberFormat
+    23. Iterator
+    24. JSON
+    25. Map
+    26. Math
+    27. NaN
+    28. Number
+    29. Object
+    30. ParallelArray
+    31. Promise
+    32. Proxy
+    33. RangeError
+    34. ReferenceError
+    35. Reflect
+    36. RegExp
+    37. SIMD
+    38. SIMD.Float32x4
+    39. SIMD.Float64x2
+    40. SIMD.Int16x8
+    41. SIMD.Int32x4
+    42. SIMD.Int8x16
+    43. Set
+    44. StopIteration
+    45. String
+    46. Symbol
+    47. SyntaxError
+    48. TypeError
+    49. TypedArray
+    50. URIError
+    51. Uint16Array
+    52. Uint32Array
+    53. Uint8Array
+    54. Uint8ClampedArray
+    55. WeakMap
+    56. WeakSet
+    57. decodeURI()
+    58. decodeURIComponent()
+    59. encodeURI()
+    60. encodeURIComponent()
+    61. escape()
+    62. eval()
+    63. isFinite()
+    64. isNaN()
+    65. null
+    66. parseFloat()
+    67. parseInt()
+    68. undefined
+    69. unescape()
+    70. uneval()
+ 9. Expressions & operators
+     1. Expressions and operators
+     2. Arithmetic operators
+     3. Array comprehensions
+     4. Assignment operators
+     5. Bitwise operators
+     6. Comma operator
+     7. Comparison operators
+     8. Conditional (ternary) Operator
+     9. Destructuring assignment
+    10. Expression closures
+    11. Generator comprehensions
+    12. Grouping operator
+    13. Legacy generator function expression
+    14. Logical Operators
+    15. Object initializer
+    16. Operator precedence
+    17. Property accessors
+    18. Spread operator
+    19. class expression
+    20. delete operator
+    21. function expression
+    22. function* expression
+    23. in operator
+    24. instanceof
+    25. new operator
+    26. new.target
+    27. super
+    28. this
+    29. typeof
+    30. void operator
+    31. yield
+    32. yield*
+10. Statements & declarations
+     1. Statements and declarations
+     2. Legacy generator function
+     3. block
+     4. break
+     5. class
+     6. const
+     7. continue
+     8. debugger
+     9. default
+    10. do...while
+    11. empty
+    12. export
+    13. for
+    14. for each...in
+    15. for...in
+    16. for...of
+    17. function
+    18. function*
+    19. if...else
+    20. import
+    21. label
+    22. let
+    23. return
+    24. switch
+    25. throw
+    26. try...catch
+    27. var
+    28. while
+    29. with
+11. Functions
+     1. Functions
+     2. Arguments object
+     3. Arrow functions
+     4. Default parameters
+     5. Method definitions
+     6. Rest parameters
+     7. getter
+     8. setter
+12. Classes
+     1. Classes
+     2. constructor
+     3. extends
+     4. static
+13. Misc
+     1. Lexical grammar
+     2. JavaScript data structures
+     3. Enumerability and ownership of properties
+     4. Iteration protocols
+     5. Strict mode
+     6. Transitioning to strict mode
+     7. Template strings
+     8. Deprecated features
+14. New in JavaScript
+     1. New in JavaScript
+     2. ECMAScript 5 support in Mozilla
+     3. ECMAScript 6 support in Mozilla
+     4. ECMAScript 7 support in Mozilla
+     5. Firefox JavaScript changelog
+     6. New in JavaScript 1.1
+     7. New in JavaScript 1.2
+     8. New in JavaScript 1.3
+     9. New in JavaScript 1.4
+    10. New in JavaScript 1.5
+    11. New in JavaScript 1.6
+    12. New in JavaScript 1.7
+    13. New in JavaScript 1.8
+    14. New in JavaScript 1.8.1
+    15. New in JavaScript 1.8.5
+15. Documentation:
+16. Useful lists
+     1. All pages index
+     2. Methods index
+     3. Properties index
+     4. Pages tagged "JavaScript"
+17. Contribute
+     1. JavaScript doc status
+     2. The MDN project
+
+© 2005-2016 Mozilla Developer Network and individual contributors.
+
+Content is available under these licenses.
+
+  • About MDN
+  • Terms
+  • Privacy
+  • Cookies
+  • Contribute to the code
+
+Other languages: [English (US)         ] Go

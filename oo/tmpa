@@ -1,0 +1,37 @@
+
+zf2j
+
+After you press j, Vim will create a fold covering three lines -- the
+line you started the fold on, and the next two lines. If you're familiar with
+Vim's movement commands, you know that the command 2j would usually tell Vim to
+move down two lines. Vim uses the same movement commands to define folds.
+
+
+zd		Delete one fold at the cursor.  When the cursor is on a folded
+		line, that fold is deleted.  Nested folds are moved one level
+		up.  In Visual mode all folds (partially) in the selected area
+		are deleted.  Careful: This easily deletes more folds than you
+		expect and there is no undo.
+		This only works when 'foldmethod' is "manual" or "marker".
+		Also see |fold-delete-marker|.
+
+
+# Default key bindings (some of it)
+
+    # means a digital number, such 2 3 99
+    zf#j   :creates a fold from the cursor down # lines.
+    zf/string :creates a fold from the cursor to string .
+    zj     :moves the cursor to the next fold.
+    zk     :moves the cursor to the previous fold.
+    zo     :opens a fold at the cursor.
+    zO     :opens all folds at the cursor.
+    zm     :increases the foldlevel by one.
+    zM     :closes all open folds.
+    zr     :decreases the foldlevel by one.
+    zR     :decreases the foldlevel to zero -- all folds will be open.
+    zd     :deletes the fold at the cursor.
+    zE     :deletes all folds.
+    [z     :move to start of open fold.
+    ]z     :move to end of open fold.
+
+

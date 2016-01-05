@@ -61,11 +61,20 @@ module.exports = function (session) {
       }, self.reapInterval);
     }
 
-    fs.mkdir(self.path, function (err) {
-        if(err) p('trying to make dir get: ', err);
-        if (err && err.code != 'EEXIST'){
-            p('trying throw err when making dir: ', err);
-            throw err;
+    // if the folder not exists, mkdir
+    fs.stat(self.path, function(err, condition){
+        if(condition){
+            p('got file condition');
+            if(u.isFunction(condition.isDirectory))
+                if(condition.isDirectory()) return p('folder exists, ', self.path);
+        }else{
+            fs.mkdir(self.path, function (err) {
+                if(err) p('trying to make dir get: ', err);
+                if (err && err.code != 'EEXIST'){
+                    p('trying throw err when making dir: ', err);
+                    throw err;
+                }
+            });
         }
     });
   }
