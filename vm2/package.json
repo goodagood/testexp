@@ -1,0 +1,14 @@
+{
+  "name": "play_with_vm2",
+  "description": "as name implied, recently i try to run user scripts  ",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:goodagood/testexp.git"
+  },
+  "private": false,
+  "scripts": {},
+  "dependencies": {
+    "underscore": "^1.8.3"
+  }
+}
