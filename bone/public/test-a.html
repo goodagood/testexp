@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Demo</title>
+</head>
+
+
+<body>
+    <h1> test, 2016 0121 </h1>
+
+</body>
+
+
+<script src="./venders/jquery/dist/jquery.js"></script>
+<script src="./venders/underscore/underscore.js"></script>
+<script src="backthis/this.js"></script>
+
+<script>
+$(document).ready(function(){
+    console.log('arguments');
+    console.log(arguments);
+});
+
+var ww = {};
+function keep(name, ref){
+    ww[name] = ref;
+}
+</script>
+</html>

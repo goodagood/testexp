@@ -1,0 +1,22 @@
+{
+  "name": "testing backbone.js ",
+  "version": "0.0.1",
+  "homepage": "https://github.com/goodagood/testexp.js",
+  "authors": [
+    "za <bin1510@gmail.com>"
+  ],
+  "description": "use bower to manage frontend js",
+  "license": "MIT",
+  "private": false,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.2.0",
+    "underscore": "~1.8.3"
+  }
+}

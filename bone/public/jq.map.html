@@ -1,0 +1,77 @@
+<!doctype html>
+<!--
+    2016 0122
+-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Demo</title>
+</head>
+
+
+<body>
+    <h1> map test, 2016 0121 </h1>
+
+    <li id="a">one</li>
+    <li id="b">two</li>
+    <li id="c">three</li>
+     
+    <ul>
+        <li><a href="#">Link 1</a></li>
+        <li><a href="#">Link 2</a></li>
+        <li><a href="#">Link 3</a></li>
+    </ul>
+</body>
+
+
+<script src="./venders/jquery/dist/jquery.js"></script>
+<!--
+<script src="./venders/underscore/underscore.js"></script>
+<script src="backthis/this.js"></script>
+-->
+
+
+<script>
+$(document).ready(function(){
+
+    var arr = [{
+            id:      "a",
+            tagName: "li"
+        }, {
+            id:      "b",
+            tagName: "li"
+        }, {
+            id:      "c",
+            tagName: "li"
+    }];
+
+    // Returns [ "a", "b", "c" ]
+    ww.a = $( "li" ).map( function( index, element ) {
+        return element.id;
+    }).get();
+
+    // Also returns [ "a", "b", "c" ]
+    // Note that the value comes first with $.map
+    ww.b = 
+    $.map( arr, function( value, index ) {
+        return value.id;
+    });
+
+
+    function play(callback){
+        var msg = 'i was in play ground at 9am.';
+        //console.log(var a = 'i was in play ground at 9am');
+        callback(msg);
+    }
+
+
+}); // end of $ ready
+
+
+
+var ww = {};
+function keep(name, ref){
+    ww[name] = ref;
+}
+</script>
+</html>

@@ -1,0 +1,91 @@
+<!doctype html>
+<!--
+    jquery 
+        $.each()             utility      iterator
+        $(selector).each()   collection   iterator
+    
+    2016 0122
+-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Demo a</title>
+</head>
+
+
+<body>
+    <h1> test a, 2016 0121 </h1>
+
+</body>
+
+<script src="./venders/jquery/dist/jquery.js"></script>
+<!--
+<script src="./venders/underscore/underscore.js"></script>
+<script src="backthis/this.js"></script>
+-->
+
+<script>
+$(document).ready(function(){
+
+    function demo1(){
+        var sum = 0;
+         
+        var arr = [ 1, 2, 3, 4, 5 ];
+
+        for ( var i = 0, l = arr.length; i < l; i++ ) {
+            sum += arr[ i ];
+        }
+
+        console.log( sum ); // 15
+    }
+
+    //Can be replaced with this:
+
+    function demo2(){
+        var sum = 0;
+         
+        var arr = [ 1, 2, 3, 4, 5 ];
+
+        $.each(arr, function(index, value ){
+            sum += value;
+        });
+
+        console.log( sum ); // 15
+    }
+
+    //-
+
+    function demo3(){
+        var sum = 0;
+        var obj = {
+            foo: 1,
+            bar: 2
+        }
+
+        for (var item in obj) {
+            sum += obj[ item ];
+        }
+
+        console.log( sum ); // 3
+
+        sum = 0; //clear
+        $.each( obj, function( key, value ) {
+            sum += value;
+        });
+
+        console.log( sum ); // 3
+    }
+
+    keep('one',   demo1);
+    keep('two',   demo2);
+    keep('three', demo3);
+}); // end of $ ready
+
+
+// only in debugging
+var ww = {};
+function keep(name, ref){
+    ww[name] = ref;
+}
+</script>
+</html>

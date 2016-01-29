@@ -1,6 +1,9 @@
 # cloned from github
 s0110/sandcastle
 s0110/jailed
+bone/backbone
+bone/backthis/.git
+*/*/.git
 vm2/vm2
 
 # Logs
