@@ -1,0 +1,104 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<title> html5 template </title>
+
+<!--
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="http://code.jquery.com/jquery.min.js"></script>
+
+<script src="http//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+<script src="http//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+-->
+
+<style>
+div.card{
+    width: 80vw;
+}
+button{
+  margin: 1em;
+}
+.msg {
+  background-color: grey;
+}
+span#saved-condition{
+  padding-left: 1em;
+  font:small;
+}
+
+</style>
+</head>
+<body>
+
+<h1> to build cards </h1>
+
+<div class="editable" id="upface" >
+    <p>
+      A better alternative to ContentEditable.
+    </p>
+</div>
+
+<div class="editable" id="downface" >
+    <p>
+      A better alternative to ContentEditable.
+    </p>
+</div>
+
+<script src="/venders/jquery/dist/jquery.js"></script>
+<script src="/aloha.min.js"></script>
+
+<script>aloha.dom.query('.editable', document).forEach(aloha);</script>
+<script>
+    $( document ).ready(function() {
+        $("button#save").click(function(e){
+            post_save();
+        });
+
+        function post_save(){
+            var text = $("div#text").html();
+            var name = $("div#title").html();
+
+            var data = {
+                text: text,
+                name: name
+            };
+            var opts = {
+                url:      "/save",
+                data:     data,
+                method:   "POST",
+                dataType: "json",
+            };
+
+            $.ajax(opts).success(function(e, state, a, b, c){
+                console.log('ajax returned');
+                if(!e.err){
+                  console.log('no err, it should be saved');
+                  var save_time = "saved at " + Date().toString();
+                  $("span#saved-condition").html(save_time);
+                }
+                console.log(arguments);
+
+            });
+        }
+
+        console.log( (this == $ ? 'yes, this is $' : 'no, this not $') );
+        //$.inspect(this, 'window');
+    });
+</script>
+</body>
+<!-- vim: et ts=2 sw=2
+-->
+</html>
+<!--
+  color match? 
+  255 33 33 - 127 127 127
+  ff2509, ff7866, c01600; opposite: 07d63e, 008f26, 5be27e
+-->
