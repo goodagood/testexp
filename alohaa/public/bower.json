@@ -1,0 +1,23 @@
+{
+  "name": "public",
+  "homepage": "https://github.com/goodagood/testexp",
+  "authors": [
+    "andrew <bin1510@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "venders",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.2.0",
+    "skeleton": "~2.0.4"
+  }
+}
