@@ -1,0 +1,5 @@
+
+#ds mplayer zoom0003.mp3;# ffmpeg -video_size 1024x576  -framerate 30 -f x11grab -i  :0.0+2,80  -c:v libx264 -qp 0  -preset ultrafast  c.mp4
+
+
+#ffmpeg -i a11.mp4 -i 1231.1048.mp3  -c copy -map 0:v:0 -map 1:a:0 -shortest out.mp4
