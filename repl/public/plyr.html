@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+
+<!--
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+-->
+
+<link rel="stylesheet" href="/venders/plyr/dist/plyr.css"> 
+
+<title> html5 template </title>
+<!--
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="./jquery.inspect.js"></script>
+-->
+
+<style>
+
+video {
+  max-width: 95%;
+}
+@media (min-width: 800px){
+  video {
+    max-width: 80%;
+  }
+}
+</style>
+
+</head>
+<body>
+
+<h1> plyr test a, 0430, y16 </h1>
+
+<div class="plyr">
+    <video poster="/tmp/cat-dog.png" controls>
+        <!-- Video files -->
+        <source src="/tmp/cat-dog.webm" type="video/webm">
+        <source src="/tmp/cat-dog.mp4" type="video/mp4">
+        <!--
+        <source src="/path/to/video.webm" type="video/webm">
+        -->
+
+        <!-- Text track file
+        <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default>
+        -->
+
+        <!-- Fallback for browsers that don't support the <video> element -->
+        <a href="/tmp/cat-dog.mp4">Download</a>
+    </video>
+</div>
+
+
+<script src="/venders/plyr/dist/plyr.js"></script>
+<script src="/venders/jquery/dist/jquery.min.js"></script>
+
+<!--
+<script src="http://code.jquery.com/jquery.min.js"></script>
+
+
+<script src="http//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+<script src="http//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+-->
+
+
+<script>
+    $( document ).ready(function() {
+        //console.log( (this == $ ? 'yes' : 'no'); );
+        plyr.setup();
+        //$.inspect(this, 'window');
+    });
+</script>
+</body>
+<!-- vim: et ts=2 sw=2
+-->
+</html>

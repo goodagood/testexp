@@ -8,7 +8,50 @@ var logger  = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 
+var flash = require("connect-flash");
 var u = require('underscore');
+var passport= require('./passport/lib/index.js');
+var LocalStrategy = require('./passport-local/lib/index.js').Strategy;
+
+passport.use(new LocalStrategy(
+            function(username, password, done) {
+                if(/^a/.test(username)) return done(null, {username:username, userid:username, isStupid:true});
+                if(/^c/.test(username)) return done(null, {username:username, userid:username, isStupid:'maybe'});
+                if(/^e/.test(username)) return done('i am not sure');
+                return done(null, false);
+
+                //User.findOne({ username: username }, function (err, user) {
+                //    if (err) { return done(err); }
+                //    if (!user) {
+                //        return done(null, false, { message: 'Incorrect username.' });
+                //    }
+                //    if (!user.validPassword(password)) {
+                //        return done(null, false, { message: 'Incorrect password.' });
+                //    }
+                //    return done(null, user);
+                //});
+            }
+));
+
+passport.serializeUser(function(user, done) {
+    if(!user.userid)   return done('there might be error, i call it userid');
+    if(!user.username) return done('can i have username');
+
+    done(null, user);
+});
+
+passport.deserializeUser(function(id, done) {
+    User_findById(id, function(err, user) {
+        done(err, user);
+    });
+});
+function User_findById(user_id, callback){
+    if(/^a/.test(user_id)) return callback(null, {username:user_id, userid:user_id, isStupid:true});
+    if(/^c/.test(user_id)) return callback(null, {username:user_id, userid:user_id, isStupid:'maybe'});
+    if(/^e/.test(user_id)) return callback(`i am not sure, the id: ${user_id}`);
+    return callback(null, null);
+}
+
 
 var routes = require('./routes/index');
 var users  = require('./routes/users');
@@ -39,6 +82,7 @@ app.use(cookieParser(secrEt));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+
 /*
  * Start the session settings.
  */
@@ -57,10 +101,14 @@ var sess = fsession.prepare_session_middle_ware(sess_folder, secrEt);
 app.use(sess);
 //** end the session settings.
 
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
 
 /*
  * things to drop into repl, look inside what happens.
  */
+var ob= require("./observer.js");
 var o = {};
 function watch(req, res, next) {
     p('cooka, app1, you are watching through express.js middle-ware like function ');
@@ -113,6 +161,7 @@ var myserver, port_number=3300;
 function applisten(){
     myserver = app.listen(port_number, function() {
       console.log('Express server listening on port ', port_number);
+      console.log("ok start interact:");
     });
 }
 applisten(); //run, let app listen to web requesting

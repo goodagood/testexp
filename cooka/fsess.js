@@ -20,7 +20,7 @@ var p = console.log;
 
 function prepare_session_middle_ware(sdir, secrets){
     sdir = sdir || '/tmp';
-    secrets = secrets || 'I-am th2 Secret W0rds!';
+    //secrets = secrets || 'I-am th2 Secret W0rds!';
 
     p('going to return session');
     return session({
@@ -28,7 +28,7 @@ function prepare_session_middle_ware(sdir, secrets){
         resave: false,
         saveUninitialized: false,
         secret: secrets,
-        cookie: {maxAge: 3600000}
+        cookie: {maxAge: 300 * 1000}
     });
 }
 

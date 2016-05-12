@@ -11,6 +11,7 @@ var fs  = require('graceful-fs'),
 
 var util = require('util');
 
+var u = require("underscore");
 var p = console.log;
 
 /**
@@ -64,14 +65,14 @@ module.exports = function (session) {
     // if the folder not exists, mkdir
     fs.stat(self.path, function(err, condition){
         if(condition){
-            p('got file condition');
+            p('fstore.js - got file condition');
             if(u.isFunction(condition.isDirectory))
                 if(condition.isDirectory()) return p('folder exists, ', self.path);
         }else{
             fs.mkdir(self.path, function (err) {
-                if(err) p('trying to make dir get: ', err);
+                if(err) p('fstore.js - trying to make dir get: ', err);
                 if (err && err.code != 'EEXIST'){
-                    p('trying throw err when making dir: ', err);
+                    p('fstore.js - trying throw err when making dir: ', err);
                     throw err;
                 }
             });
@@ -79,7 +80,7 @@ module.exports = function (session) {
     });
   }
 
-  /**
+  /*
    * Inherit from Store
    */
   FileStore.prototype.__proto__ = Store.prototype;
@@ -125,7 +126,7 @@ module.exports = function (session) {
   FileStore.prototype.get = function (sessionId, callback) {
     var self = this;
 
-    p('in get');
+    p('fstore.js - in get');
 
     var sessionPath = path.join(this.path, sessionId + '.json'),
       json;
@@ -138,7 +139,7 @@ module.exports = function (session) {
     });
 
     operation.attempt(function (currentAttempt) {
-        p('current attempt in get, ', currentAttempt);
+        p('fstore.js - current attempt in get, ', currentAttempt);
         fs.readFile(sessionPath, 'utf8', function (err, data) {
             if (err) return callback(err);
 
@@ -172,7 +173,7 @@ module.exports = function (session) {
 
     var session_json_file_path = path.join(self.path, sessionId + '.json');
 
-    p('in set, ', session_json_file_path);
+    p('fstore.js - in set, ', session_json_file_path);
 
     try {
       session.__lastAccess = new Date().getTime();
@@ -196,7 +197,7 @@ module.exports = function (session) {
    * @api public
    */
   FileStore.prototype.destroy = function (sessionId, callback) {
-      p('in destroy');
+      p('fstore.js - in destroy');
       fs.unlink(path.join(this.path, sessionId + '.json'), function (err) {
           if (callback) callback(err);
       });
@@ -210,7 +211,7 @@ module.exports = function (session) {
    * @api public
    */
   FileStore.prototype.length = function (callback) {
-      p('in length');
+      p('fstore.js - in length');
       var self = this;
 
       fs.readdir(self.path, function (err, files) {
@@ -235,7 +236,7 @@ module.exports = function (session) {
    * @api public
    */
   FileStore.prototype.clear = function (callback) {
-      p('in clear');
+      p('fstore.js - in clear');
     var self = this,
       filePath;
 
@@ -272,7 +273,7 @@ module.exports = function (session) {
    * @api public
    */
   FileStore.prototype.list = function (callback) {
-      p('in list');
+      p('fstore.js - in list');
     var self = this;
 
     fs.readdir(self.path, function (err, files) {
@@ -295,7 +296,7 @@ module.exports = function (session) {
    * @api public
    */
   FileStore.prototype.expired = function (sessionId, callback) {
-      p('in expired');
+      p('fstore.js - in expired');
     var self = this,
       now = new Date().getTime();
     self.get(sessionId, function (err, session) {
@@ -312,9 +313,10 @@ module.exports = function (session) {
 
   //h
   FileStore.prototype.info = function () {
+      p('fstore.js - options');
       p(options);
   };
-  p('going to return FileStore');
+  p('fstore.js - going to return FileStore');
 
   return FileStore;
 };

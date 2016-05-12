@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<!--
+    checking blueimp gallery
+    2016 0509
+-->
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+
+
+<title>
+0509 2016 checking blueimp gallery
+</title>
+<!--
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="./jquery.inspect.js"></script>
+
+-->
+
+<link rel="stylesheet" href="/venders/blueimp-gallery/css/blueimp-gallery.min.css">
+</head>
+<body>
+
+<h1>
+    checking blueimp gallery
+</h1>
+
+
+<!-- The Gallery as lightbox dialog, should be a child element of the document body -->
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+</div>
+
+<div id="links">
+
+  <a href="/vid2/bob.bus.png" title="bob.bus.png">
+    <img src="/vid2/bob.bus.30.png" alt="bob.bus.png">
+  </a>
+
+  <a href="/vid2/bulls.1.png" title="bulls.1.png">
+    <img src="/vid2/bulls.1.30.png" alt="bulls.1.png">
+  </a>
+
+  <a href="/vid2/bulls.2.png" title="bulls.2.png">
+    <img src="/vid2/bulls.2.30.png" alt="bulls.2.png">
+  </a>
+
+  <a href="/vid2/bulls.3.png" title="bulls.3.png">
+    <img src="/vid2/bulls.3.30.png" alt="bulls.3.png">
+  </a>
+
+  <a href="/vid2/bulls.4.png" title="bulls.4.png">
+    <img src="/vid2/bulls.4.30.png" alt="bulls.4.png">
+  </a>
+
+  <a href="/vid2/bulls.5.png" title="bulls.5.png">
+    <img src="/vid2/bulls.5.30.png" alt="bulls.5.png">
+  </a>
+
+  <a href="/vid2/bulls.6.png" title="bulls.6.png">
+    <img src="/vid2/bulls.6.30.png" alt="bulls.6.png">
+  </a>
+
+
+</div>
+
+<script src="/venders/blueimp-gallery/js/blueimp-gallery.min.js"></script>
+
+<script src="/venders/jquery/dist/jquery.min.js"></script>
+
+
+<!--
+<script src="http://code.jquery.com/jquery.min.js"></script>
+<script src="http//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+<script src="http//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+-->
+
+
+<script>
+document.getElementById('links').onclick = function(event){
+  event = event || window.event;
+  var target = event.target || event.srcElement;
+  var link = target.src ? target.parentNode : target;
+  var options = {index: link, event: event};
+  var links = this.getElementsByTagName('a');
+  blueimp.Gallery(links, options);
+};
+</script>
+
+<script>
+$(document).ready(function() {
+    //console.log( (this == $ ? 'yes' : 'no'); );
+    //$.inspect(this, 'window');
+});
+</script>
+
+</body>
+<!-- vim: et ts=2 sw=2
+-->
+</html>

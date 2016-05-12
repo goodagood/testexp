@@ -7,8 +7,25 @@
     "url": "git@github.com:goodagood/testexp.git"
   },
   "private": false,
-  "scripts": {},
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
+  },
   "dependencies": {
+    "file-type": "^3.8.0",
+    "mime-db": "^1.22.0",
+    "mime-type": "^3.0.4",
+    "mmmagic": "^0.4.1",
+    "read-chunk": "^1.0.1",
     "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-util": "^3.0.7",
+    "jshint": "^2.9.1",
+    "jshint-stylish": "^2.1.0",
+    "mocha": "^2.4.5",
+    "should": "^8.2.2"
   }
 }

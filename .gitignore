@@ -3,8 +3,21 @@ s0110/sandcastle
 s0110/jailed
 bone/backbone
 bone/backthis/.git
+alohaa/public/venders
 */*/.git
 vm2/vm2
+*.tar.gz
+cooka/passport/
+cooka/passport-local/
+passport/
+repl/public/vid
+repl/public/plyr
+repl/public/Gallery
+Gallery/
+vid1/
+vid/
+vid2/
+
 
 # Logs
 logs

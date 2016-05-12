@@ -1,0 +1,26 @@
+{
+  "name": "gallery-finding",
+  "homepage": "https://github.com/goodagood/testexp",
+  "authors": [
+    "Andrew <Andrew@hasee>"
+  ],
+  "description": "the public dir of express.js project",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "venders",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "blueimp-gallery": "~2.21.1",
+    "jquery": "~2.2.3",
+    "font-awesome": "fontawesome#~4.6.2",
+    "video.js": "~5.10.1"
+  }
+}

@@ -1,0 +1,53 @@
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title> cors rquest</title>
+</head>
+<body>
+<h1>cors rquest</h1>
+</body>
+<script>
+
+function createCORSRequest(method, url) {
+    var xhr = new XMLHttpRequest();
+    if ("withCredentials" in xhr) {
+        // Check if the XMLHttpRequest object has a "withCredentials" property.
+        // "withCredentials" only exists on XMLHTTPRequest2 objects.
+        console.log('yes, XMLHTTPRequest obj has a withCredentials property');
+        xhr.open(method, url, true);
+    } else if (typeof XDomainRequest != "undefined") {
+        // Otherwise, check if XDomainRequest.
+        // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+        xhr = new XDomainRequest();
+        xhr.open(method, url);
+    } else {
+        // Otherwise, CORS is not supported by the browser.
+        console.log(' Otherwise, CORS is not supported by the browser.');
+        xhr = null;
+    }
+    return xhr;
+}
+
+var url = 'https://developer.mozilla.org/en-US/search.json';
+var xhr = createCORSRequest('GET', url);
+
+            xhr.send();
+            xhr.onload = function () {
+                if (this.status >= 200 && this.status < 300) {
+                    // Performs the function "resolve" when this.status is equal to 2xx
+                    console.log(this.response);
+                } else {
+                    // Performs the function "reject" when this.status is different than 2xx
+                    console.log(this.statusText);
+                }
+            };
+            xhr.onerror = function () {
+                console.log(this.statusText);
+            };
+
+if (!xhr) {
+    throw new Error('CORS not supported');
+}
+</script>
+</html>

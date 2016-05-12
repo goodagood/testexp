@@ -1,0 +1,15 @@
+
+Fonts actively used in this project
+-----------------------------------
+
+Font name       :   Raleway
+Font provider   :   google
+
+
+
+******************************************************************************
+
+
+
+
+Created by Typecast on 2016/01/31.

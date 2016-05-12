@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to login #{title}
+  form(action="/login"    name="login"    method="POST")
+    label(for="username") username
+        input(type="text"     name="username")
+    br
+    label(for="password") password
+        input(type="password" name="password")
+    br
+    input(type="submit"   value="login")
+
+  #message
+    p
+        user flash: #{message}

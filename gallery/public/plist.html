@@ -1,0 +1,209 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<!--
+    checking blueimp gallery
+    2016 0509
+-->
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+
+
+<title>
+0509 2016 checking blueimp gallery
+</title>
+<!--
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="./jquery.inspect.js"></script>
+
+-->
+
+<link rel="stylesheet" href="/skeleton204/css/normalize.css">
+<link rel="stylesheet" href="/skeleton204/css/skeleton.css">
+
+<link rel="stylesheet" href="/font-awesome-4.6.2/css/font-awesome.min.css">
+
+<style>
+.poster {
+  margin: 0.5em 1em;
+  float: left;
+}
+
+.thumb-wrapper {
+  position: relative;
+}
+
+.play-btn {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+  background:  url('/images/video-play.svg')  no-repeat;
+}
+
+.name {
+  background-color: #ccc;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>
+      list posters of videos
+  </h1>
+
+
+
+  <div id="links">
+
+
+
+    <div class="poster">
+
+        <div class="thumb-wrapper">
+          <img src="/vid2/bob.bus.png" height="160" alt="bob.bus.png">
+          <span class="play-btn"></span>
+        </div>
+
+        <p>
+            <span class="value">6</span>
+            <i class="fa fa-tint"></i>
+            <span class="name">bob.bus.png</span>
+        </p>
+    </div>
+
+
+    <div class="poster">
+
+        <div class="thumb-wrapper">
+          <img src="/vid2/bulls.1.png" height="160" alt="bulls.1.png">
+          <span class="play-btn"></span>
+        </div>
+
+        <p>
+            <span class="value">83</span>
+            <i class="fa fa-tint"></i>
+            <span class="name">bulls.1.png</span>
+        </p>
+    </div>
+
+
+    <div class="poster">
+
+        <div class="thumb-wrapper">
+          <img src="/vid2/bulls.2.png" height="160" alt="bulls.2.png">
+          <span class="play-btn"></span>
+        </div>
+
+        <p>
+            <span class="value">94</span>
+            <i class="fa fa-tint"></i>
+            <span class="name">bulls.2.png</span>
+        </p>
+    </div>
+
+
+    <div class="poster">
+
+        <div class="thumb-wrapper">
+          <img src="/vid2/bulls.3.png" height="160" alt="bulls.3.png">
+          <span class="play-btn"></span>
+        </div>
+
+        <p>
+            <span class="value">15</span>
+            <i class="fa fa-tint"></i>
+            <span class="name">bulls.3.png</span>
+        </p>
+    </div>
+
+
+    <div class="poster">
+
+        <div class="thumb-wrapper">
+          <img src="/vid2/bulls.4.png" height="160" alt="bulls.4.png">
+          <span class="play-btn"></span>
+        </div>
+
+        <p>
+            <span class="value">41</span>
+            <i class="fa fa-tint"></i>
+            <span class="name">bulls.4.png</span>
+        </p>
+    </div>
+
+
+    <div class="poster">
+
+        <div class="thumb-wrapper">
+          <img src="/vid2/bulls.5.png" height="160" alt="bulls.5.png">
+          <span class="play-btn"></span>
+        </div>
+
+        <p>
+            <span class="value">10</span>
+            <i class="fa fa-tint"></i>
+            <span class="name">bulls.5.png</span>
+        </p>
+    </div>
+
+
+    <div class="poster">
+
+        <div class="thumb-wrapper">
+          <img src="/vid2/bulls.6.png" height="160" alt="bulls.6.png">
+          <span class="play-btn"></span>
+        </div>
+
+        <p>
+            <span class="value">77</span>
+            <i class="fa fa-tint"></i>
+            <span class="name">bulls.6.png</span>
+        </p>
+    </div>
+
+
+  </div>
+
+</div> <!-- end of the container -->
+
+<script src="/venders/blueimp-gallery/js/blueimp-gallery.min.js"></script>
+
+<script src="/venders/jquery/dist/jquery.min.js"></script>
+
+
+<!--
+<script src="http://code.jquery.com/jquery.min.js"></script>
+<script src="http//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+<script src="http//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+-->
+
+
+<script>
+document.getElementById('links').onclick = function(event){
+  event = event || window.event;
+  var target = event.target || event.srcElement;
+  var link = target.src ? target.parentNode : target;
+  var options = {index: link, event: event};
+  var links = this.getElementsByTagName('a');
+  blueimp.Gallery(links, options);
+};
+</script>
+
+<script>
+$(document).ready(function() {
+    //console.log( (this == $ ? 'yes' : 'no'); );
+    //$.inspect(this, 'window');
+});
+</script>
+
+</body>
+<!-- vim: et ts=2 sw=2
+-->
+</html>
